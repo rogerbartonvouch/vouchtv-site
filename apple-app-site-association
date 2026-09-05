@@ -1,0 +1,15 @@
+{
+  "applinks": {
+    "details": [
+      {
+        "appIDs": ["KXKK88582F.com.rogerbarton.vouch"],
+        "components": [
+          { "/": "/i/*", "comment": "friend invite links" }
+        ]
+      }
+    ]
+  },
+  "webcredentials": {
+    "apps": ["KXKK88582F.com.rogerbarton.vouch"]
+  }
+}
