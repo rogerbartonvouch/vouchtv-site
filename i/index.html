@@ -3,8 +3,14 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>You're invited to Vouch</title>
+<title>You're invited to VouchTV</title>
 <meta name="robots" content="noindex">
+<meta property="og:site_name" content="VouchTV">
+<meta property="og:title" content="The seat beside mine is open.">
+<meta property="og:description" content="A friend is holding a seat for you on VouchTV — algorithms recommend, people vouch.">
+<meta property="og:image" content="https://vouchtv.com/og-invite.png">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
 <style>
   body{margin:0;background:#12100e;color:#e8e2d6;font-family:Georgia,'Times New Roman',serif;
        display:flex;min-height:100vh;align-items:center;justify-content:center;text-align:center}
@@ -29,7 +35,9 @@
   <p class="quiet">Invitations are single-use and expire after seven days.</p>
 </main>
 <script>
-  var m = location.pathname.match(/^\/i\/([0-9a-fA-F]{32})\/?$/);
+  var m = location.pathname.match(/^\/i\/([0-9a-fA-F]{32})\/?$/) ||
+          location.search.match(/[?&]c=([0-9a-fA-F]{32})(?:&|$)/) ||
+          location.hash.match(/^#([0-9a-fA-F]{32})$/);
   if (m) { var el = document.getElementById('code'); el.textContent = m[1].toLowerCase(); }
 </script>
 </body>
