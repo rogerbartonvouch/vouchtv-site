@@ -1,0 +1,3 @@
+Cinzel (Natanael Gama) and Jost (Owen Earl, indestructible type*) are licensed under the
+SIL Open Font License, Version 1.1 — https://openfontlicense.org
+They are the typefaces of the VouchTV app, served here unmodified for the website.

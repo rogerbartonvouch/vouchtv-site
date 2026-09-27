@@ -4,28 +4,102 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>VouchTV — algorithms recommend, people vouch</title>
-<meta name="description" content="Vouch is a film and TV discovery app for iPhone. Every pick is a real, named person's actually-stated recommendation — with a citation. In private beta.">
+<meta name="description" content="You sat down to watch something twenty minutes ago… and you're still scrolling. VouchTV solves the couch problem — films and shows chosen by people who love them. For iPhone, in private beta.">
+<meta property="og:site_name" content="VouchTV">
+<meta property="og:title" content="You sat down to watch something twenty minutes ago… and you're still scrolling.">
+<meta property="og:description" content="VouchTV solves the couch problem — films and shows chosen by people who love them.">
+<meta property="og:image" content="https://vouchtv.com/img/og-home.jpg">
+<meta property="og:url" content="https://vouchtv.com/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preload" href="/fonts/Cinzel-Regular.ttf" as="font" type="font/ttf" crossorigin>
 <style>
-  body{margin:0;background:#12100e;color:#e8e2d6;font-family:Georgia,'Times New Roman',serif;
-       display:flex;min-height:100vh;align-items:center;justify-content:center;text-align:center}
-  main{padding:2rem;max-width:34rem}
-  .burst{color:#b08d3f;font-size:1.6rem;letter-spacing:.4em;margin-bottom:1.2rem}
-  h1{font-weight:400;font-size:2.6rem;letter-spacing:.12em;margin:.2rem 0 1.4rem}
-  h1 .ouch{font-size:.81em;letter-spacing:.1em}
-  h1 .tv{color:#b08d3f}
-  p.thesis{font-size:1.15rem;font-style:italic;color:#cfc6b4;margin:0 0 2.2rem}
-  p.beta{font-size:.85rem;letter-spacing:.18em;text-transform:uppercase;color:#8a8172}
-  hr{border:none;border-top:1px solid #2c2822;width:4rem;margin:2rem auto}
+  /* Fonts: the app's own faces (Cinzel, Jost — SIL Open Font License, see /fonts/OFL.txt) */
+  @font-face{font-family:Cinzel;src:url(/fonts/Cinzel-Regular.ttf) format("truetype");font-weight:400;font-display:swap}
+  @font-face{font-family:Cinzel;src:url(/fonts/Cinzel-SemiBold.ttf) format("truetype");font-weight:600;font-display:swap}
+  @font-face{font-family:Jost;src:url(/fonts/Jost-Regular.ttf) format("truetype");font-weight:400;font-display:swap}
+  @font-face{font-family:Jost;src:url(/fonts/Jost-Medium.ttf) format("truetype");font-weight:500;font-display:swap}
+
+  :root{
+    --ivory:#ECE8DE; --muted:#AAB0BC; --brass:#C9A35E;          /* on dark */
+    --ink-dark:#171A20; --brass-on-silver:#6B4E1E;              /* on the silver plate (app masthead) */
+    --ground:#010203;                                           /* = the photo's bottom edge: no seam */
+    --h:2.36vw;                                                 /* headline size: tracks the image */
+  }
+  html,body{margin:0;background:var(--ground);color:var(--ivory)}
+  body{font-family:Jost,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+
+  /* The hero is locked to the photograph's own shape so the copy always lands on the couch back. */
+  .hero{position:relative;width:100%;aspect-ratio:16/9;overflow:hidden}
+  .hero img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block}
+  .copy{position:absolute;left:0;right:0;top:64.4%;text-align:center;padding:0 5vw}
+
+  h1{font-family:Cinzel,Georgia,serif;font-weight:400;font-size:var(--h);line-height:1.43;margin:0;color:var(--ivory)}
+  h1 .l{display:block}
+  .sub{font-size:calc(var(--h)*.62);color:var(--muted);margin:calc(var(--h)*.9) 0 0;line-height:1.4}
+  .sub span{display:inline}
+
+  /* The app's masthead plate (PalaceMasthead): silver sheen, black Vouch, antique-gold TV, brass crest, rule + diamond. */
+  .plate{display:inline-flex;align-items:center;gap:.5em;margin-top:calc(var(--h)*.95);
+         font-size:calc(var(--h)*.9);padding:.42em .67em;border-radius:.25em;
+         background:linear-gradient(90deg,#B0B8C4 0%,#BDC5CF 22%,#B6BEC9 48%,#BDC5CF 74%,#B0B8C4 100%);
+         box-shadow:0 .12em .6em rgba(0,0,0,.42)}
+  .crest{width:1.25em;height:.65em;overflow:visible;flex:none}
+  .wm{font-family:Cinzel,Georgia,serif;font-weight:600;letter-spacing:.05em;line-height:1;color:var(--ink-dark);white-space:nowrap}
+  .wm .ouch{font-size:.9em}
+  .wm .tv{color:var(--brass-on-silver)}
+  .rule{width:1.9em;height:1px;background:var(--brass-on-silver);flex:none}
+  .diamond{width:.21em;height:.21em;background:var(--brass-on-silver);transform:rotate(45deg);flex:none;margin-left:-.2em}
+
+  .tag{font-weight:500;font-size:calc(var(--h)*.45);letter-spacing:.19em;color:var(--brass);margin:calc(var(--h)*.45) 0 0}
+
+  footer{text-align:center;padding:3.2rem 1.5rem 3.6rem;color:#8a8172;font-size:.8rem;letter-spacing:.18em;text-transform:uppercase}
+  footer p{margin:.5rem 0}
+  footer a{color:#8a8172;text-decoration:none}
+
+  /* Portrait screens get the tall (Story) framing: TV fading into the wall, couch back extended below. */
+  @media (max-aspect-ratio:1/1){
+    :root{--h:4.6vw}
+    .hero{aspect-ratio:9/16}
+    .copy{top:57.5%}
+    h1 .a{display:block}
+    .sub span{display:block}
+    .tag{font-size:calc(var(--h)*.43);letter-spacing:.16em}
+    footer{font-size:.7rem;letter-spacing:.12em;padding:2.4rem 1rem 3rem}
+    footer span{display:block}
+    footer .dot{display:none}
+  }
 </style>
 </head>
 <body>
 <main>
-  <div class="burst">☀</div>
-  <h1>V<span class="ouch">OUCH</span><span class="tv">TV</span></h1>
-  <p class="thesis">Algorithms recommend. People vouch.</p>
-  <hr>
-  <p class="beta">A film &amp; TV discovery app for iPhone · in private beta</p>
-  <p class="beta" style="margin-top:1rem"><a href="mailto:feedback@vouchtv.com" style="color:#8a8172;text-decoration:none">feedback@vouchtv.com</a></p>
+  <section class="hero">
+    <picture>
+      <source media="(max-aspect-ratio:1/1)" srcset="/img/hero-tall-1080.jpg">
+      <img src="/img/hero-wide-1600.jpg" srcset="/img/hero-wide-1600.jpg 1600w, /img/hero-wide-2560.jpg 2560w"
+           sizes="100vw" alt="A couple on a couch at night, seen from behind, facing a wall of streaming thumbnails; she has dozed off on his shoulder, he still holds the remote.">
+    </picture>
+    <div class="copy">
+      <h1><span class="l"><span class="a">You sat down to watch</span> <span class="a">something twenty minutes ago…</span></span> <span class="l">and you’re still scrolling.</span></h1>
+      <p class="sub"><span>VouchTV solves the couch problem —</span> <span>films and shows chosen by people who love them.</span></p>
+      <div class="plate" role="img" aria-label="VouchTV">
+        <svg class="crest" viewBox="0 0 46 24" aria-hidden="true">
+          <g stroke="#6B4E1E" stroke-width="1.4" stroke-linecap="round">
+            <line x1="23" y1="24" x2="4.7" y2="13"/><line x1="23" y1="24" x2="8.3" y2="8.3"/><line x1="23" y1="24" x2="13" y2="5"/>
+            <line x1="23" y1="24" x2="17.8" y2="3.2"/><line x1="23" y1="24" x2="23" y2="2.5"/><line x1="23" y1="24" x2="28.2" y2="3.2"/>
+            <line x1="23" y1="24" x2="33" y2="5"/><line x1="23" y1="24" x2="37.7" y2="8.3"/><line x1="23" y1="24" x2="41.3" y2="13"/>
+          </g>
+          <circle cx="23" cy="24" r="1.6" fill="#6B4E1E"/>
+        </svg>
+        <span class="wm">V<span class="ouch">ouch</span><span class="tv">TV</span></span>
+        <span class="rule"></span><span class="diamond"></span>
+      </div>
+      <p class="tag">ALGORITHMS RECOMMEND.&nbsp; PEOPLE VOUCH.</p>
+    </div>
+  </section>
 </main>
+<footer>
+  <p><span>A film &amp; TV discovery app for iPhone</span><span class="dot"> · </span><span>in private beta</span></p>
+  <p><a href="mailto:feedback@vouchtv.com">feedback@vouchtv.com</a></p>
+</footer>
 </body>
 </html>
